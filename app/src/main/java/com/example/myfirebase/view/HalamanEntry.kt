@@ -9,7 +9,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,6 +19,8 @@ import com.example.myfirebase.modeldata.UIStateSiswa
 import com.example.myfirebase.view.route.DestinasiEntry
 import com.example.myfirebase.viewmodel.EntryViewModel
 import com.example.myfirebase.viewmodel.PenyediaViewModel
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,7 +124,9 @@ fun FormTambahSiswa(
         OutlinedTextField(
             value = detailSiswa.telpon,
             onValueChange = { onValueChange(detailSiswa.copy(telpon = it)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            ),
             label = { Text(text = stringResource(R.string.telpon)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
