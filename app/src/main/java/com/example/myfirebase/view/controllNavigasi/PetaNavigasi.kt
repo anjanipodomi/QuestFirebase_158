@@ -1,14 +1,12 @@
-package com.example.myfirebase.view.controllNavigasi
+package com.example.myfirebase.view.controlNavigasi
 
 import HomeScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.myfirebase.view.EntrySiswaScreen
 
 @Composable
@@ -35,7 +33,8 @@ fun HostNavigasi(
                     navController.navigate(DestinasiEntry.route)
                 },
                 navigateToItemUpdate = {
-                    navController.navigate("${DestinasiDetail.route}/${it}")
+                    // Detail/Edit belum dikerjakan (praktikum minggu depan)
+                    // Jadi sementara tidak melakukan navigasi apa pun.
                 }
             )
         }
