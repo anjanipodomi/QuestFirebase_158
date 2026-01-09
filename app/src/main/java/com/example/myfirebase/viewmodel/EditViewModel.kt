@@ -48,3 +48,22 @@ fun getSiswa() {
         }
     }
 }
+
+fun updateUiState(detailSiswa: DetailSiswa) {
+    uiStateSiswa = UIStateSiswa(
+        detailSiswa = detailSiswa,
+        isEntryValid = validasiInput(detailSiswa)
+    )
+}
+
+suspend fun updateSiswa() {
+    try {
+        repositorySiswa.editSatuSiswa(
+            idSiswa,
+            uiStateSiswa.detailSiswa.toSiswa()
+        )
+        statusUIEdit = StatusUIEdit.Success
+    } catch (e: Exception) {
+        statusUIEdit = StatusUIEdit.Error
+    }
+}
