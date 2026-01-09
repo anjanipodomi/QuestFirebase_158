@@ -1,17 +1,17 @@
 package com.example.myfirebase.view
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.launch
-import com.example.myfirebase.R
+import com.example.myfirebase.view.route.DestinasiEdit
 import com.example.myfirebase.viewmodel.EditViewModel
 import com.example.myfirebase.viewmodel.PenyediaViewModel
-import com.example.myfirebase.view.route.DestinasiEdit
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +32,6 @@ fun EditSiswaScreen(
         modifier = modifier
     ) { innerPadding ->
         val coroutineScope = rememberCoroutineScope()
-
         EntrySiswaBody(
             uiStateSiswa = viewModel.uiStateSiswa,
             onSiswaValueChange = viewModel::updateUiState,

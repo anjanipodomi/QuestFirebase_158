@@ -1,3 +1,5 @@
+@file:OptIn(InternalSerializationApi::class)
+
 package com.example.myfirebase.viewmodel
 
 import androidx.compose.runtime.getValue
@@ -10,6 +12,7 @@ import com.example.myfirebase.modeldata.Siswa
 import com.example.myfirebase.repositori.RepositorySiswa
 import com.example.myfirebase.view.route.DestinasiDetail
 import kotlinx.coroutines.launch
+import kotlinx.serialization.InternalSerializationApi
 import java.io.IOException
 
 sealed interface StatusUIDetail {
