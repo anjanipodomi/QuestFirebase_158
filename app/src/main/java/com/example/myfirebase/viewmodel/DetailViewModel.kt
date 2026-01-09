@@ -5,3 +5,4 @@ sealed interface StatusUIDetail {
     object Error : StatusUIDetail
     object Loading : StatusUIDetail
 }
+}
