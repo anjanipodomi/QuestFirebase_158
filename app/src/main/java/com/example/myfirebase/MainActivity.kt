@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.myfirebase.ui.theme.MyFirebaseTheme
-import com.example.myfirebase.view.controlNavigasi.DataSiswaApp
+import com.example.myfirebase.view.controllNavigasi.DataSiswaApp
 
 
 class MainActivity : ComponentActivity() {

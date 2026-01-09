@@ -1,4 +1,4 @@
-package com.example.myfirebase.view.controlNavigasi
+package com.example.myfirebase.view.controllNavigasi
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
