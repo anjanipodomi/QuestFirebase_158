@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myfirebase.modeldata.DetailSiswa
 import com.example.myfirebase.modeldata.UIStateSiswa
+import com.example.myfirebase.modeldata.toDataSiswa
+import com.example.myfirebase.modeldata.toUiStateSiswa
 import com.example.myfirebase.repositori.RepositorySiswa
 import com.example.myfirebase.view.route.DestinasiDetail
 import kotlinx.coroutines.launch
@@ -26,8 +28,10 @@ class EditViewModel(
 
     init {
         viewModelScope.launch {
-            uiStateSiswa = repositorySiswa.getSatuSiswa(idSiswa)!!
-                .toUIStateSiswa(true)
+            val siswa = repositorySiswa.getSatuSiswa(idSiswa)
+            if (siswa != null) {
+                uiStateSiswa = siswa.toUiStateSiswa(true)
+            }
         }
     }
 
@@ -38,9 +42,7 @@ class EditViewModel(
         )
     }
 
-    private fun validasiInput(
-        uiState: DetailSiswa = uiStateSiswa.detailSiswa
-    ): Boolean {
+    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
         return with(uiState) {
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
@@ -48,15 +50,10 @@ class EditViewModel(
 
     suspend fun editSatuSiswa() {
         if (validasiInput(uiStateSiswa.detailSiswa)) {
-            try {
-                repositorySiswa.editSatuSiswa(
-                    idSiswa,
-                    uiStateSiswa.detailSiswa.toDataSiswa()
-                )
-                println("Update Sukses: $idSiswa")
-            } catch (e: Exception) {
-                println("Update Error: ${e.message}")
-            }
+            repositorySiswa.editSatuSiswa(
+                idSiswa,
+                uiStateSiswa.detailSiswa.toDataSiswa()
+            )
         }
     }
 }
