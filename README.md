@@ -5,3 +5,5 @@ Tampilan Halaman Form untuk mengisi data Nama, Alamat, dan Nomor telefon <img wi
 Tampilan Home dengan data yg baru ditambahkan <img width="330" height="681" alt="image" src="https://github.com/user-attachments/assets/604fbad7-6f14-46e0-a769-d04caefda7d0" />
 
 Database firebase dengan 2 data <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/fce109e4-cde5-42f4-b1eb-8b804fa9ef28" />
+
+Halaman Detail <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3e7ddea1-53d9-45c5-808a-fd34a3f4eee7" />
