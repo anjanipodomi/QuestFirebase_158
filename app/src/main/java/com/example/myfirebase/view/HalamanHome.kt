@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,7 +24,6 @@ import com.example.myfirebase.view.route.DestinasiHome
 import com.example.myfirebase.viewmodel.HomeViewModel
 import com.example.myfirebase.viewmodel.PenyediaViewModel
 import com.example.myfirebase.viewmodel.StatusUiSiswa
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +34,7 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -58,9 +59,11 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             statusUiSiswa = viewModel.statusUiSiswa,
-            onSiswaClick = navigateToItemUpdate,
+            onSiswaClick = { id ->
+                navigateToItemUpdate(id)
+            },
             retryAction = viewModel::loadSiswa,
-            modifier = modifier
+            modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         )
@@ -82,11 +85,13 @@ fun HomeBody(
             is StatusUiSiswa.Loading -> LoadingScreen()
             is StatusUiSiswa.Success -> DaftarSiswa(
                 itemSiswa = statusUiSiswa.siswa,
-                onSiswaClick = { onSiswaClick(it.id.toInt()) }
+                onSiswaClick = { siswa ->
+                    onSiswaClick(siswa.id.toInt())
+                }
             )
             is StatusUiSiswa.Error -> ErrorScreen(
-                retryAction,
-                modifier = modifier.fillMaxSize()
+                retryAction = retryAction,
+                modifier = Modifier.fillMaxSize()
             )
         }
     }
@@ -127,13 +132,16 @@ fun DaftarSiswa(
     onSiswaClick: (Siswa) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(modifier = Modifier) {
-        items(items = itemSiswa, key = { it.id }) { person ->
+    LazyColumn(modifier = modifier) {
+        items(
+            items = itemSiswa,
+            key = { it.id }
+        ) { siswa ->
             ItemSiswa(
-                siswa = person,
+                siswa = siswa,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onSiswaClick(person) }
+                    .clickable { onSiswaClick(siswa) }
             )
         }
     }
