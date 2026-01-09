@@ -1,5 +1,3 @@
-@file:OptIn(InternalSerializationApi::class)
-
 package com.example.myfirebase.viewmodel
 
 import androidx.compose.runtime.getValue
@@ -11,55 +9,25 @@ import androidx.lifecycle.viewModelScope
 import com.example.myfirebase.modeldata.DetailSiswa
 import com.example.myfirebase.modeldata.UIStateSiswa
 import com.example.myfirebase.repositori.RepositorySiswa
-import com.example.myfirebase.view.route.DestinasiEdit
+import com.example.myfirebase.view.route.DestinasiDetail
 import kotlinx.coroutines.launch
-import kotlinx.serialization.InternalSerializationApi
-
-sealed interface StatusUIEdit {
-    object Loading : StatusUIEdit
-    object Success : StatusUIEdit
-    object Error : StatusUIEdit
-}
 
 class EditViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositorySiswa: RepositorySiswa
 ) : ViewModel() {
 
-    private val idSiswa: Long =
-        savedStateHandle.get<String>(DestinasiEdit.itemIdArg)?.toLong()
-            ?: error("idSiswa tidak ditemukan")
-
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
-    var statusUIEdit: StatusUIEdit by mutableStateOf(StatusUIEdit.Loading)
-        private set
+    private val idSiswa: Long =
+        savedStateHandle.get<String>(DestinasiDetail.itemIdArg)?.toLong()
+            ?: error("idSiswa tidak ditemukan di SavedStateHandle")
 
     init {
-        getSiswa()
-    }
-
-    fun getSiswa() {
         viewModelScope.launch {
-            statusUIEdit = StatusUIEdit.Loading
-            try {
-                val siswa = repositorySiswa.getSatuSiswa(idSiswa)
-                siswa?.let {
-                    uiStateSiswa = UIStateSiswa(
-                        detailSiswa = DetailSiswa(
-                            id = it.id,
-                            nama = it.nama,
-                            alamat = it.alamat,
-                            telpon = it.telpon
-                        ),
-                        isEntryValid = true
-                    )
-                }
-                statusUIEdit = StatusUIEdit.Success
-            } catch (e: Exception) {
-                statusUIEdit = StatusUIEdit.Error
-            }
+            uiStateSiswa = repositorySiswa.getSatuSiswa(idSiswa)!!
+                .toUIStateSiswa(true)
         }
     }
 
@@ -70,16 +38,25 @@ class EditViewModel(
         )
     }
 
-    suspend fun updateSiswa() {
-        try {
-            repositorySiswa.editSatuSiswa(
-                idSiswa,
-                uiStateSiswa.detailSiswa.toSiswa()
-            )
-            statusUIEdit = StatusUIEdit.Success
-        } catch (e: Exception) {
-            statusUIEdit = StatusUIEdit.Error
+    private fun validasiInput(
+        uiState: DetailSiswa = uiStateSiswa.detailSiswa
+    ): Boolean {
+        return with(uiState) {
+            nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
+        }
+    }
+
+    suspend fun editSatuSiswa() {
+        if (validasiInput(uiStateSiswa.detailSiswa)) {
+            try {
+                repositorySiswa.editSatuSiswa(
+                    idSiswa,
+                    uiStateSiswa.detailSiswa.toDataSiswa()
+                )
+                println("Update Sukses: $idSiswa")
+            } catch (e: Exception) {
+                println("Update Error: ${e.message}")
+            }
         }
     }
 }
-
