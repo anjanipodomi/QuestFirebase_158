@@ -26,3 +26,25 @@ class EditViewModel(
     }
 }
 
+fun getSiswa() {
+    viewModelScope.launch {
+        statusUIEdit = StatusUIEdit.Loading
+        try {
+            val siswa = repositorySiswa.getSatuSiswa(idSiswa)
+            siswa?.let {
+                uiStateSiswa = UIStateSiswa(
+                    detailSiswa = DetailSiswa(
+                        id = it.id,
+                        nama = it.nama,
+                        alamat = it.alamat,
+                        telpon = it.telpon
+                    ),
+                    isEntryValid = true
+                )
+            }
+            statusUIEdit = StatusUIEdit.Success
+        } catch (e: Exception) {
+            statusUIEdit = StatusUIEdit.Error
+        }
+    }
+}
